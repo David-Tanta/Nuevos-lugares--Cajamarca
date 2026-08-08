@@ -1,0 +1,849 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuevos Lugares · Cajamarca</title>
+<meta name="description" content="Descubre destinos poco conocidos de Cajamarca: cataratas, bosques de piedra, miradores y valles altoandinos.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  /* ============ TOKENS ============ */
+  :root{
+    --verde-pasto:#3E7A3D;
+    --verde-pasto-suave:#6FA85E;
+    --verde-ladera:#1F3D2B;
+    --gris-roca:#8A8D87;
+    --gris-roca-claro:#C9CCC4;
+    --blanco-nube:#F5F4EF;
+    --tierra:#8B4A32;
+    --tierra-suave:#B8703F;
+    --azul-cielo:#1E5C8C;
+    --azul-cielo-suave:#3E7FAE;
+
+    --tinta:#182420;
+    --tinta-suave:#4B554E;
+
+    --font-display:'Space Grotesk', sans-serif;
+    --font-body:'Inter', sans-serif;
+    --font-mono:'IBM Plex Mono', monospace;
+
+    --radio:2px;
+    --contenedor: 1180px;
+  }
+
+  *{ box-sizing:border-box; margin:0; padding:0; }
+  html{ scroll-behavior:smooth; }
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    *{ animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; }
+  }
+
+  body{
+    font-family:var(--font-body);
+    background:var(--blanco-nube);
+    color:var(--tinta);
+    line-height:1.55;
+    font-weight:300;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  img,svg{ display:block; max-width:100%; }
+  a{ color:inherit; text-decoration:none; }
+  ul{ list-style:none; }
+  button, input, textarea{ font-family:inherit; font-size:inherit; color:inherit; }
+
+  .contenedor{
+    width:100%;
+    max-width:var(--contenedor);
+    margin-inline:auto;
+    padding-inline:1.5rem;
+  }
+
+  .eyebrow{
+    font-family:var(--font-mono);
+    font-size:0.72rem;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--verde-pasto);
+    display:inline-flex;
+    align-items:center;
+    gap:0.5rem;
+  }
+  .eyebrow::before{
+    content:"";
+    width:8px; height:8px;
+    background:var(--verde-pasto);
+    border-radius:50%;
+    display:inline-block;
+  }
+
+  h1,h2,h3,h4{
+    font-family:var(--font-display);
+    font-weight:600;
+    color:var(--verde-ladera);
+    letter-spacing:-0.01em;
+  }
+
+  .visually-hidden{
+    position:absolute; width:1px; height:1px; overflow:hidden;
+    clip:rect(0 0 0 0); white-space:nowrap;
+  }
+
+  :focus-visible{
+    outline:3px solid var(--azul-cielo);
+    outline-offset:3px;
+  }
+
+  /* ============ HEADER ============ */
+  header.sitio{
+    position:sticky; top:0; z-index:50;
+    background:rgba(245,244,239,0.88);
+    backdrop-filter:blur(10px);
+    border-bottom:1px solid rgba(31,61,43,0.1);
+  }
+  .barra-nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding-block:1.1rem;
+  }
+  .marca{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.05rem;
+    color:var(--verde-ladera);
+    display:flex; align-items:center; gap:0.55rem;
+  }
+  .marca .punto{
+    width:10px; height:10px; border-radius:50%;
+    background:var(--tierra);
+  }
+  .marca small{
+    display:block;
+    font-family:var(--font-mono);
+    font-weight:500;
+    font-size:0.62rem;
+    letter-spacing:0.12em;
+    color:var(--gris-roca);
+    text-transform:uppercase;
+  }
+
+  nav.enlaces{ display:none; }
+  nav.enlaces ul{ display:flex; gap:2.1rem; }
+  nav.enlaces a{
+    font-size:0.92rem; font-weight:500;
+    color:var(--tinta-suave);
+    position:relative;
+    padding-block:0.25rem;
+  }
+  nav.enlaces a:hover{ color:var(--verde-ladera); }
+  nav.enlaces a::after{
+    content:""; position:absolute; left:0; right:0; bottom:0;
+    height:2px; background:var(--verde-pasto);
+    transform:scaleX(0); transform-origin:left;
+    transition:transform .25s ease;
+  }
+  nav.enlaces a:hover::after{ transform:scaleX(1); }
+
+  .btn-nav-cta{
+    display:none;
+    font-size:0.85rem; font-weight:600;
+    padding:0.6rem 1.15rem;
+    border:1px solid var(--verde-ladera);
+    border-radius:var(--radio);
+    color:var(--verde-ladera);
+    transition:background .2s ease, color .2s ease;
+  }
+  .btn-nav-cta:hover{ background:var(--verde-ladera); color:var(--blanco-nube); }
+
+  .btn-menu{
+    display:flex; flex-direction:column; gap:5px;
+    background:none; border:none; cursor:pointer;
+    padding:0.4rem;
+  }
+  .btn-menu span{
+    width:22px; height:2px; background:var(--verde-ladera);
+    transition:transform .25s ease, opacity .25s ease;
+  }
+  .btn-menu[aria-expanded="true"] span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  .btn-menu[aria-expanded="true"] span:nth-child(2){ opacity:0; }
+  .btn-menu[aria-expanded="true"] span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+  .menu-movil{
+    display:none;
+    flex-direction:column;
+    padding:0.5rem 1.5rem 1.5rem;
+    border-top:1px solid rgba(31,61,43,0.1);
+  }
+  .menu-movil.abierto{ display:flex; }
+  .menu-movil a{
+    padding:0.85rem 0;
+    font-size:1rem; font-weight:500;
+    border-bottom:1px solid rgba(31,61,43,0.08);
+    color:var(--tinta-suave);
+  }
+  .menu-movil a:last-of-type{ border-bottom:none; }
+
+  @media (min-width:860px){
+    nav.enlaces{ display:block; }
+    .btn-nav-cta{ display:inline-block; }
+    .btn-menu{ display:none; }
+    .menu-movil{ display:none !important; }
+  }
+
+  /* ============ HERO ============ */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    padding-top:3.2rem;
+  }
+  .hero-grid{
+    display:grid;
+    gap:2.5rem;
+    align-items:end;
+    padding-bottom:2.5rem;
+  }
+  .hero-texto{ max-width:640px; }
+  .hero-texto .eyebrow{ margin-bottom:1.4rem; }
+  .hero h1{
+    font-size:clamp(2.4rem, 6vw, 4.3rem);
+    line-height:1.03;
+    margin-bottom:1.4rem;
+  }
+  .hero h1 em{
+    font-style:normal;
+    color:var(--verde-pasto);
+  }
+  .hero p.lead{
+    font-size:1.08rem;
+    color:var(--tinta-suave);
+    max-width:34rem;
+    margin-bottom:2rem;
+    font-weight:300;
+  }
+  .hero-acciones{ display:flex; flex-wrap:wrap; gap:1rem; margin-bottom:2.6rem; }
+
+  .btn{
+    display:inline-flex; align-items:center; gap:0.5rem;
+    padding:0.9rem 1.6rem;
+    font-size:0.92rem; font-weight:600;
+    border-radius:var(--radio);
+    border:1px solid transparent;
+    cursor:pointer;
+    transition:transform .2s ease, background .2s ease, color .2s ease, border-color .2s ease;
+  }
+  .btn:hover{ transform:translateY(-2px); }
+  .btn-primario{ background:var(--verde-ladera); color:var(--blanco-nube); }
+  .btn-primario:hover{ background:var(--verde-pasto); }
+  .btn-secundario{ border-color:var(--gris-roca); color:var(--verde-ladera); }
+  .btn-secundario:hover{ border-color:var(--verde-ladera); background:rgba(31,61,43,0.05); }
+
+  .hero-datos{
+    display:flex; gap:2.2rem; flex-wrap:wrap;
+    padding-top:1.6rem;
+    border-top:1px solid rgba(31,61,43,0.12);
+  }
+  .hero-dato strong{
+    display:block; font-family:var(--font-display);
+    font-size:1.6rem; color:var(--verde-ladera);
+  }
+  .hero-dato span{
+    font-family:var(--font-mono); font-size:0.68rem;
+    letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--gris-roca);
+  }
+
+  .hero-ilustracion{ width:100%; }
+  .cordillera-svg{ width:100%; height:auto; }
+  .nube{
+    animation:derivar 34s linear infinite;
+  }
+  .nube2{ animation:derivar 46s linear infinite reverse; }
+  @keyframes derivar{
+    from{ transform:translateX(-4%); }
+    50%{ transform:translateX(4%); }
+    to{ transform:translateX(-4%); }
+  }
+
+  @media (min-width:960px){
+    .hero-grid{ grid-template-columns:1fr; }
+    .hero{ padding-top:4.5rem; }
+  }
+
+  /* ============ DIVISOR TOPOGRAFICO ============ */
+  .divisor{ line-height:0; }
+  .divisor svg{ width:100%; height:56px; display:block; }
+
+  /* ============ SECCION GENERAL ============ */
+  section{ padding-block:5rem; }
+  .encabezado-seccion{
+    max-width:640px;
+    margin-bottom:3rem;
+  }
+  .encabezado-seccion h2{
+    font-size:clamp(1.9rem, 4vw, 2.7rem);
+    margin-top:0.9rem;
+  }
+  .encabezado-seccion p{
+    color:var(--tinta-suave);
+    margin-top:1rem;
+    font-size:1.02rem;
+  }
+
+  /* ============ DESTINOS ============ */
+  .destinos{ background:var(--blanco-nube); }
+  .grid-destinos{
+    display:grid;
+    gap:1.5rem;
+    grid-template-columns:1fr;
+  }
+  @media (min-width:640px){
+    .grid-destinos{ grid-template-columns:repeat(2,1fr); }
+  }
+  @media (min-width:1040px){
+    .grid-destinos{ grid-template-columns:repeat(3,1fr); }
+  }
+
+  .tarjeta-destino{
+    background:#fff;
+    border:1px solid rgba(31,61,43,0.1);
+    border-radius:var(--radio);
+    padding:1.7rem;
+    display:flex; flex-direction:column;
+    transition:transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  }
+  .tarjeta-destino:hover{
+    transform:translateY(-5px);
+    box-shadow:0 20px 40px -24px rgba(31,61,43,0.35);
+    border-color:transparent;
+  }
+  .franja-tarjeta{
+    height:6px; width:2.4rem; border-radius:2px;
+    margin-bottom:1.3rem;
+  }
+  .tarjeta-destino .alt{
+    font-family:var(--font-mono);
+    font-size:0.7rem; letter-spacing:0.1em;
+    color:var(--gris-roca); text-transform:uppercase;
+    margin-bottom:0.5rem;
+  }
+  .tarjeta-destino h3{ font-size:1.28rem; margin-bottom:0.6rem; }
+  .tarjeta-destino p{ color:var(--tinta-suave); font-size:0.94rem; flex-grow:1; }
+  .tarjeta-destino .tipo{
+    margin-top:1.2rem; padding-top:1.1rem;
+    border-top:1px dashed rgba(31,61,43,0.15);
+    display:flex; justify-content:space-between; align-items:center;
+    font-size:0.82rem; font-weight:600; color:var(--verde-ladera);
+  }
+  .tarjeta-destino .tipo .etiqueta{
+    font-weight:500; color:var(--gris-roca);
+  }
+
+  /* ============ SOBRE NOSOTROS ============ */
+  .nosotros{
+    background:var(--verde-ladera);
+    color:var(--blanco-nube);
+  }
+  .nosotros .eyebrow{ color:var(--verde-pasto-suave); }
+  .nosotros .eyebrow::before{ background:var(--verde-pasto-suave); }
+  .nosotros h2{ color:var(--blanco-nube); }
+  .grid-nosotros{
+    display:grid; gap:2.5rem;
+  }
+  .nosotros-texto p{ color:#CDD8CF; font-size:1.02rem; margin-bottom:1.1rem; max-width:38rem; }
+  .fila-valores{
+    display:grid; gap:1.4rem; grid-template-columns:1fr;
+    margin-top:2rem;
+  }
+  @media (min-width:640px){ .fila-valores{ grid-template-columns:repeat(3,1fr); } }
+
+  .valor{
+    border-left:2px solid var(--verde-pasto-suave);
+    padding-left:1.1rem;
+  }
+  .valor strong{
+    font-family:var(--font-display);
+    font-size:2.1rem; display:block; color:#fff;
+  }
+  .valor span{
+    font-family:var(--font-mono); font-size:0.68rem;
+    text-transform:uppercase; letter-spacing:0.08em;
+    color:var(--gris-roca-claro);
+  }
+
+  @media (min-width:960px){
+    .grid-nosotros{ grid-template-columns: 1.1fr 0.9fr; align-items:center; }
+  }
+
+  /* ============ CONTACTO ============ */
+  .contacto{ background:var(--blanco-nube); }
+  .grid-contacto{
+    display:grid; gap:2.8rem;
+  }
+  @media (min-width:960px){
+    .grid-contacto{ grid-template-columns:0.9fr 1.1fr; }
+  }
+
+  .info-contacto .item{
+    display:flex; gap:1rem; margin-bottom:1.6rem;
+    align-items:flex-start;
+  }
+  .info-contacto .icono{
+    width:38px; height:38px; border-radius:50%;
+    background:rgba(62,122,61,0.12);
+    display:flex; align-items:center; justify-content:center;
+    flex-shrink:0;
+    color:var(--verde-pasto);
+    font-family:var(--font-mono); font-size:0.75rem; font-weight:600;
+  }
+  .info-contacto h4{ font-size:1rem; margin-bottom:0.2rem; }
+  .info-contacto p{ color:var(--tinta-suave); font-size:0.94rem; }
+
+  form.formulario{
+    background:#fff;
+    border:1px solid rgba(31,61,43,0.1);
+    border-radius:var(--radio);
+    padding:2rem;
+  }
+  .campo{ margin-bottom:1.4rem; }
+  .campo label{
+    display:block; font-size:0.82rem; font-weight:600;
+    color:var(--verde-ladera); margin-bottom:0.5rem;
+  }
+  .campo input, .campo textarea{
+    width:100%;
+    padding:0.85rem 1rem;
+    border:1px solid rgba(31,61,43,0.2);
+    border-radius:var(--radio);
+    background:var(--blanco-nube);
+    transition:border-color .2s ease, background .2s ease;
+  }
+  .campo input:focus, .campo textarea:focus{
+    border-color:var(--verde-pasto);
+    background:#fff;
+    outline:none;
+  }
+  .campo textarea{ resize:vertical; min-height:120px; }
+  .campo.error input, .campo.error textarea{ border-color:var(--tierra); }
+  .campo .msg-error{
+    display:none;
+    font-size:0.78rem; color:var(--tierra);
+    margin-top:0.4rem;
+  }
+  .campo.error .msg-error{ display:block; }
+
+  .fila-campos{ display:grid; gap:1.4rem; }
+  @media (min-width:560px){ .fila-campos{ grid-template-columns:1fr 1fr; } }
+
+  .estado-envio{
+    margin-top:1rem;
+    font-size:0.9rem;
+    padding:0.9rem 1rem;
+    border-radius:var(--radio);
+    display:none;
+  }
+  .estado-envio.visible{ display:block; }
+  .estado-envio.ok{ background:rgba(62,122,61,0.12); color:var(--verde-ladera); }
+
+  /* ============ FOOTER ============ */
+  footer.sitio{
+    background:var(--tinta);
+    color:var(--gris-roca-claro);
+    padding-block:3.5rem 2rem;
+  }
+  .footer-grid{
+    display:grid; gap:2.5rem;
+    padding-bottom:2.5rem;
+    border-bottom:1px solid rgba(255,255,255,0.1);
+  }
+  @media (min-width:760px){
+    .footer-grid{ grid-template-columns:1.3fr 0.8fr 0.8fr 1fr; }
+  }
+  .footer-marca{ font-family:var(--font-display); font-weight:700; color:#fff; font-size:1.1rem; margin-bottom:0.9rem; }
+  .footer-grid p{ font-size:0.9rem; max-width:26rem; color:var(--gris-roca-claro); }
+  .footer-col h5{
+    font-family:var(--font-mono); font-size:0.7rem; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--verde-pasto-suave); margin-bottom:1rem;
+  }
+  .footer-col a, .footer-col span{
+    display:block; font-size:0.9rem; margin-bottom:0.7rem; color:var(--gris-roca-claro);
+  }
+  .footer-col a:hover{ color:#fff; }
+  .footer-inferior{
+    padding-top:1.6rem;
+    display:flex; flex-wrap:wrap; gap:1rem;
+    justify-content:space-between; align-items:center;
+    font-size:0.8rem; color:var(--gris-roca);
+  }
+  .volver-arriba{
+    font-family:var(--font-mono); font-size:0.72rem;
+    letter-spacing:0.08em; text-transform:uppercase;
+    border:1px solid rgba(255,255,255,0.2); border-radius:var(--radio);
+    padding:0.5rem 0.9rem;
+    transition:border-color .2s ease;
+  }
+  .volver-arriba:hover{ border-color:var(--verde-pasto-suave); color:#fff; }
+
+  /* reveal on scroll */
+  .revelar{
+    opacity:0; transform:translateY(18px);
+    transition:opacity .7s ease, transform .7s ease;
+  }
+  .revelar.visible{ opacity:1; transform:translateY(0); }
+</style>
+</head>
+<body>
+
+<header class="sitio">
+  <div class="contenedor barra-nav">
+    <a href="#inicio" class="marca">
+      <span class="punto"></span>
+      <span>
+        Nuevos Lugares
+        <small>Cajamarca · Perú</small>
+      </span>
+    </a>
+
+    <nav class="enlaces" aria-label="Navegación principal">
+      <ul>
+        <li><a href="#inicio">Inicio</a></li>
+        <li><a href="#destinos">Destinos</a></li>
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#contacto">Contacto</a></li>
+      </ul>
+    </nav>
+
+    <a href="#contacto" class="btn-nav-cta">Planea tu ruta</a>
+
+    <button class="btn-menu" id="btnMenu" aria-expanded="false" aria-controls="menuMovil" aria-label="Abrir menú">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <nav class="menu-movil" id="menuMovil" aria-label="Navegación móvil">
+    <a href="#inicio">Inicio</a>
+    <a href="#destinos">Destinos</a>
+    <a href="#nosotros">Nosotros</a>
+    <a href="#contacto">Contacto</a>
+  </nav>
+</header>
+
+<main>
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="inicio">
+    <div class="contenedor hero-grid">
+      <div class="hero-texto">
+        <p class="eyebrow">Guía de campo · Cajamarca</p>
+        <h1>Cajamarca tiene <em>lugares</em> que el mapa todavía no marca.</h1>
+        <p class="lead">Recorremos quebradas, bosques de piedra y miradores altoandinos poco visitados para documentarlos y llevarte hasta ellos con guías de la zona.</p>
+        <div class="hero-acciones">
+          <a href="#destinos" class="btn btn-primario">Explorar destinos</a>
+          <a href="#nosotros" class="btn btn-secundario">Cómo trabajamos</a>
+        </div>
+        <div class="hero-datos">
+          <div class="hero-dato"><strong>38</strong><span>Lugares mapeados</span></div>
+          <div class="hero-dato"><strong>3,180 m</strong><span>Altitud promedio</span></div>
+          <div class="hero-dato"><strong>13</strong><span>Guías locales</span></div>
+        </div>
+      </div>
+
+      <div class="hero-ilustracion" aria-hidden="true">
+        <svg class="cordillera-svg" viewBox="0 0 1200 480" xmlns="http://www.w3.org/2000/svg">
+          <rect width="1200" height="480" fill="#3E7FAE"/>
+          <rect width="1200" height="480" fill="#1E5C8C" opacity="0.25"/>
+          <circle cx="980" cy="110" r="58" fill="#F5F4EF" opacity="0.9"/>
+          <g class="nube" opacity="0.75">
+            <ellipse cx="200" cy="90" rx="70" ry="20" fill="#F5F4EF"/>
+            <ellipse cx="250" cy="80" rx="50" ry="18" fill="#F5F4EF"/>
+          </g>
+          <g class="nube2" opacity="0.6">
+            <ellipse cx="620" cy="60" rx="60" ry="16" fill="#F5F4EF"/>
+          </g>
+          <!-- laderas lejanas -->
+          <polygon points="0,300 180,190 340,260 520,150 700,240 900,170 1080,250 1200,210 1200,480 0,480" fill="#8A8D87"/>
+          <polygon points="0,320 220,230 430,290 640,200 860,270 1050,220 1200,260 1200,480 0,480" fill="#B8703F" opacity="0.55"/>
+          <!-- ladera con árboles -->
+          <polygon points="0,360 150,300 330,350 540,280 760,340 980,300 1200,330 1200,480 0,480" fill="#1F3D2B"/>
+          <!-- pastizal frontal -->
+          <polygon points="0,420 200,380 460,410 720,370 960,405 1200,385 1200,480 0,480" fill="#3E7A3D"/>
+          <!-- roca / cauce -->
+          <polygon points="380,480 430,400 480,420 520,390 560,430 600,400 640,480" fill="#C9CCC4" opacity="0.9"/>
+        </svg>
+      </div>
+    </div>
+
+    <div class="divisor" aria-hidden="true">
+      <svg viewBox="0 0 1200 56" preserveAspectRatio="none"><path d="M0,28 C150,50 300,6 450,28 C600,50 750,6 900,28 C1050,50 1150,20 1200,28 L1200,56 L0,56 Z" fill="#F5F4EF"/></svg>
+    </div>
+  </section>
+
+  <!-- ============ DESTINOS ============ -->
+  <section class="destinos" id="destinos">
+    <div class="contenedor">
+      <div class="encabezado-seccion revelar">
+        <p class="eyebrow">Destinos recientes</p>
+        <h2>Rutas documentadas esta temporada</h2>
+        <p>Cada lugar se visita, se georreferencia y se valida con la comunidad local antes de sumarse a la guía.</p>
+      </div>
+
+      <div class="grid-destinos">
+
+        <article class="tarjeta-destino revelar">
+          <div class="franja-tarjeta" style="background:var(--azul-cielo)"></div>
+          <p class="alt">3,450 msnm</p>
+          <h3>Mirador de Yanacancha</h3>
+          <p>Un balcón natural sobre el valle, con vistas abiertas al cielo despejado y a las laderas boscosas del cañón. Mejor al amanecer.</p>
+          <div class="tipo"><span>Mirador</span><span class="etiqueta">2h desde la ciudad</span></div>
+        </article>
+
+        <article class="tarjeta-destino revelar">
+          <div class="franja-tarjeta" style="background:var(--verde-pasto)"></div>
+          <p class="alt">2,980 msnm</p>
+          <h3>Catarata de Llanguat</h3>
+          <p>Una caída de agua entre rocas grises y musgo, rodeada de pastizales intensos. El acceso es guiado por familias de la zona.</p>
+          <div class="tipo"><span>Catarata</span><span class="etiqueta">Circuito de 4h</span></div>
+        </article>
+
+        <article class="tarjeta-destino revelar">
+          <div class="franja-tarjeta" style="background:var(--tierra)"></div>
+          <p class="alt">3,600 msnm</p>
+          <h3>Bosque de Piedras de Combayo</h3>
+          <p>Formaciones rocosas de tonos marrones y rojizos talladas por el viento, similares a Cumbemayo pero con muy poca afluencia.</p>
+          <div class="tipo"><span>Formación rocosa</span><span class="etiqueta">Media jornada</span></div>
+        </article>
+
+        <article class="tarjeta-destino revelar">
+          <div class="franja-tarjeta" style="background:var(--verde-ladera)"></div>
+          <p class="alt">2,750 msnm</p>
+          <h3>Bosque de Neblina de Sócota</h3>
+          <p>Árboles de verdes oscuros cubiertos de musgo y niebla baja, un ecosistema húmedo poco frecuentado al sur de la región.</p>
+          <div class="tipo"><span>Bosque nublado</span><span class="etiqueta">Requiere guía</span></div>
+        </article>
+
+        <article class="tarjeta-destino revelar">
+          <div class="franja-tarjeta" style="background:var(--gris-roca)"></div>
+          <p class="alt">3,900 msnm</p>
+          <h3>Quebrada del Cóndor</h3>
+          <p>Un cauce rocoso entre laderas grises y blancas, punto de avistamiento de cóndores andinos en horas de la mañana.</p>
+          <div class="tipo"><span>Quebrada</span><span class="etiqueta">Trekking · 5h</span></div>
+        </article>
+
+        <article class="tarjeta-destino revelar">
+          <div class="franja-tarjeta" style="background:var(--azul-cielo-suave)"></div>
+          <p class="alt">3,220 msnm</p>
+          <h3>Laguna de Cushuro</h3>
+          <p>Un espejo de agua que refleja el azul intenso del cielo despejado, rodeado de pastizales altoandinos y ganado local.</p>
+          <div class="tipo"><span>Laguna</span><span class="etiqueta">Ideal para acampar</span></div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SOBRE NOSOTROS ============ -->
+  <section class="nosotros" id="nosotros">
+    <div class="contenedor grid-nosotros">
+      <div class="nosotros-texto revelar">
+        <p class="eyebrow">Sobre nosotros</p>
+        <h2>Caminamos primero, publicamos después</h2>
+        <p>Somos un equipo pequeño de guías y caminantes de Cajamarca. Antes de sumar un lugar a la guía, lo visitamos, conversamos con las familias que viven ahí y confirmamos que el acceso sea seguro y respetuoso con el territorio.</p>
+        <p>Trabajamos junto a comunidades locales para que el turismo deje algo bueno detrás: rutas cuidadas, ingresos justos y lugares que se mantienen tal como los encontramos.</p>
+
+        <div class="fila-valores">
+          <div class="valor"><strong>2019</strong><span>Primer recorrido</span></div>
+          <div class="valor"><strong>+15</strong><span>Comunidades aliadas</span></div>
+          <div class="valor"><strong>100%</strong><span>Guías originarios de la zona</span></div>
+        </div>
+      </div>
+
+      <div class="revelar" aria-hidden="true">
+        <svg viewBox="0 0 500 500" xmlns="http://www.w3.org/2000/svg" style="width:100%;height:auto;">
+          <circle cx="250" cy="250" r="230" fill="none" stroke="#3E7A3D" stroke-width="1" opacity="0.35"/>
+          <circle cx="250" cy="250" r="170" fill="none" stroke="#6FA85E" stroke-width="1" opacity="0.35"/>
+          <circle cx="250" cy="250" r="110" fill="none" stroke="#C9CCC4" stroke-width="1" opacity="0.4"/>
+          <circle cx="250" cy="250" r="50" fill="none" stroke="#B8703F" stroke-width="1" opacity="0.45"/>
+          <path d="M250,250 L250,60" stroke="#F5F4EF" stroke-width="1" stroke-dasharray="4 6" opacity="0.5"/>
+          <circle cx="250" cy="60" r="5" fill="#F5F4EF"/>
+          <text x="262" y="64" fill="#CDD8CF" font-family="IBM Plex Mono" font-size="11">3,180 msnm</text>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CONTACTO ============ -->
+  <section class="contacto" id="contacto">
+    <div class="contenedor">
+      <div class="encabezado-seccion revelar">
+        <p class="eyebrow">Contacto</p>
+        <h2>Cuéntanos qué tipo de ruta buscas</h2>
+        <p>Respondemos en menos de 48 horas con opciones de fecha, dificultad y punto de encuentro.</p>
+      </div>
+
+      <div class="grid-contacto">
+        <div class="info-contacto revelar">
+          <div class="item">
+            <div class="icono">@</div>
+            <div>
+              <h4>Correo</h4>
+              <p>hola@nuevoslugarescajamarca.pe</p>
+            </div>
+          </div>
+          <div class="item">
+            <div class="icono">TE</div>
+            <div>
+              <h4>Teléfono / WhatsApp</h4>
+              <p>+51 976 000 000</p>
+            </div>
+          </div>
+          <div class="item">
+            <div class="icono">UB</div>
+            <div>
+              <h4>Punto de encuentro</h4>
+              <p>Jr. Cruz de Piedra 450, Cajamarca</p>
+            </div>
+          </div>
+          <div class="item">
+            <div class="icono">HR</div>
+            <div>
+              <h4>Horario de atención</h4>
+              <p>Lunes a sábado, 8:00 a.m. – 6:00 p.m.</p>
+            </div>
+          </div>
+        </div>
+
+        <form class="formulario revelar" id="formularioContacto" novalidate>
+          <div class="fila-campos">
+            <div class="campo" id="campoNombre">
+              <label for="nombre">Nombre completo</label>
+              <input type="text" id="nombre" name="nombre" autocomplete="name" required>
+              <p class="msg-error">Escribe tu nombre.</p>
+            </div>
+            <div class="campo" id="campoCorreo">
+              <label for="correo">Correo electrónico</label>
+              <input type="email" id="correo" name="correo" autocomplete="email" required>
+              <p class="msg-error">Escribe un correo válido.</p>
+            </div>
+          </div>
+
+          <div class="campo" id="campoMensaje">
+            <label for="mensaje">Cuéntanos qué tipo de lugar buscas</label>
+            <textarea id="mensaje" name="mensaje" required placeholder="Ej: buscamos una ruta de un día, caminata moderada, para 4 personas."></textarea>
+            <p class="msg-error">Escribe un mensaje.</p>
+          </div>
+
+          <button type="submit" class="btn btn-primario" style="width:100%; justify-content:center;">Enviar mensaje</button>
+
+          <div class="estado-envio ok" id="estadoEnvio" role="status"></div>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="sitio">
+  <div class="contenedor">
+    <div class="footer-grid">
+      <div>
+        <p class="footer-marca">Nuevos Lugares · Cajamarca</p>
+        <p>Una guía de campo hecha caminando, en colaboración con las comunidades que habitan cada lugar que recomendamos.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Navegación</h5>
+        <a href="#inicio">Inicio</a>
+        <a href="#destinos">Destinos</a>
+        <a href="#nosotros">Nosotros</a>
+        <a href="#contacto">Contacto</a>
+      </div>
+      <div class="footer-col">
+        <h5>Redes</h5>
+        <a href="#">Instagram</a>
+        <a href="#">Facebook</a>
+        <a href="#">YouTube</a>
+      </div>
+      <div class="footer-col">
+        <h5>Contacto</h5>
+        <span>hola@nuevoslugarescajamarca.pe</span>
+        <span>+51 976 000 000</span>
+        <span>Cajamarca, Perú</span>
+      </div>
+    </div>
+
+    <div class="footer-inferior">
+      <p>&copy; <span id="anioActual"></span> Nuevos Lugares Cajamarca. Todos los derechos reservados.</p>
+      <a href="#inicio" class="volver-arriba">Volver arriba ↑</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // Año dinámico en el footer
+  document.getElementById('anioActual').textContent = new Date().getFullYear();
+
+  // Menú móvil
+  const btnMenu = document.getElementById('btnMenu');
+  const menuMovil = document.getElementById('menuMovil');
+  btnMenu.addEventListener('click', () => {
+    const abierto = menuMovil.classList.toggle('abierto');
+    btnMenu.setAttribute('aria-expanded', abierto ? 'true' : 'false');
+  });
+  menuMovil.querySelectorAll('a').forEach(enlace => {
+    enlace.addEventListener('click', () => {
+      menuMovil.classList.remove('abierto');
+      btnMenu.setAttribute('aria-expanded', 'false');
+    });
+  });
+
+  // Revelado al hacer scroll
+  const elementosRevelar = document.querySelectorAll('.revelar');
+  if ('IntersectionObserver' in window) {
+    const observador = new IntersectionObserver((entradas) => {
+      entradas.forEach(entrada => {
+        if (entrada.isIntersecting) {
+          entrada.target.classList.add('visible');
+          observador.unobserve(entrada.target);
+        }
+      });
+    }, { threshold: 0.15 });
+    elementosRevelar.forEach(el => observador.observe(el));
+  } else {
+    elementosRevelar.forEach(el => el.classList.add('visible'));
+  }
+
+  // Validación del formulario de contacto
+  const formulario = document.getElementById('formularioContacto');
+  const estadoEnvio = document.getElementById('estadoEnvio');
+
+  const campos = [
+    { id: 'campoNombre', input: 'nombre', validar: v => v.trim().length > 1 },
+    { id: 'campoCorreo', input: 'correo', validar: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+    { id: 'campoMensaje', input: 'mensaje', validar: v => v.trim().length > 4 },
+  ];
+
+  formulario.addEventListener('submit', (evento) => {
+    evento.preventDefault();
+    let formularioValido = true;
+
+    campos.forEach(campo => {
+      const contenedor = document.getElementById(campo.id);
+      const valor = formulario.elements[campo.input].value;
+      const esValido = campo.validar(valor);
+      contenedor.classList.toggle('error', !esValido);
+      if (!esValido) formularioValido = false;
+    });
+
+    if (!formularioValido) {
+      estadoEnvio.textContent = 'Revisa los campos marcados antes de enviar.';
+      estadoEnvio.classList.remove('ok');
+      estadoEnvio.classList.add('visible');
+      return;
+    }
+
+    const nombre = formulario.elements['nombre'].value.trim().split(' ')[0];
+    estadoEnvio.textContent = `Gracias, ${nombre}. Recibimos tu mensaje y te escribiremos pronto.`;
+    estadoEnvio.classList.add('ok', 'visible');
+    formulario.reset();
+  });
+</script>
+
+</body>
+</html>
